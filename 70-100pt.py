@@ -28,12 +28,12 @@ class myApp(object):
         # Enter my text
         self.prompt = "Rockets left :"
         
-        self.label1 = Label(root, text=self.prompt, width=len(self.prompt), bg='green')
+        self.label1 = Label(root, text=self.prompt, width=len(self.prompt), bg='gray')
         self.label1.pack()
 
         self.rockets = 3
         
-        self.rocketsTxt = Label(root, text=str(self.rockets), width=len(str(self.rockets)), bg='green')
+        self.rocketsTxt = Label(root, text=str(self.rockets), width=len(str(self.rockets)), bg='gray')
         self.rocketsTxt.pack()
         
         self.rocketFired = False
@@ -61,10 +61,38 @@ class myApp(object):
     def key(self,event):
         global player
         global rocket1Fired
+        px1,py1,px2,py2 = drawpad.coords(player)
+        
         if event.char == "w":
-            drawpad.move(player,0,-4)
-            drawpad.move(rocket1,0,-4)
-            
+            drawpad.move(player, 0,-4)
+            drawpad.move(rocket1, 0,-4)
+        #px1,py1,px2,py2 = drawpad.coords(player)
+        if py1 < 0:
+	    drawpad.move(player, 0, 4)
+	    drawpad.move(rocket1, 0, 4)    
+        
+        if event.char == "a":
+            drawpad.move(player,-4, 0)
+            drawpad.move(rocket1,-4, 0)
+        if px1 < 0:
+	    drawpad.move(player, 4, 0)
+	    drawpad.move(rocket1, 4, 0)    
+        
+        
+        if event.char == "d":
+            drawpad.move(player, 4, 0)
+            drawpad.move(rocket1, 4, 0)
+        if px2 > drawpad.winfo_width():
+	    drawpad.move(player, -4, 0)
+	    drawpad.move(rocket1, -4, 0)
+        
+        
+        if event.char == "s":
+            drawpad.move(player, 0, 4)
+            drawpad.move(rocket1, 0, 4)
+        if py2 > drawpad.winfo_height():
+	    drawpad.move(player, 0, -4)
+	    drawpad.move(rocket1, 0, -4)     
     
     def collisionDetect(self, rocket):
         rx1,ry1,rx2,ry2 = drawpad.coords(rocket)
